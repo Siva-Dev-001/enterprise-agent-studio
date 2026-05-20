@@ -1,0 +1,13 @@
+streamlit
+langgraph
+openai
+pymongo
+numpy
+pandas
+python-dotenv
+fastapi
+uvicorn
+requests
+ollama
+requests
+sentence-transformers
