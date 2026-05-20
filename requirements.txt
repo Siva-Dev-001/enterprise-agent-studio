@@ -11,3 +11,7 @@ requests
 ollama
 requests
 sentence-transformers
+anthropic
+torchvision
+pdfplumber
+python-docx

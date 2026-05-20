@@ -1,4 +1,4 @@
-from llm.ollama import call_llm
+from llm.azure_openai import call_llm
 
 def planner(task):
     prompt = f"Break task into steps:\n{task}"
