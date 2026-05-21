@@ -1,9 +1,16 @@
-
-````markdown
 # Enterprise Multi-Agent AI Workflow Studio
 
 Production-grade Agentic AI Workflow Platform built using  
-Streamlit + LangGraph + Ollama + MongoDB Atlas Vector Search + MCP-inspired Tool Orchestration.
+**Streamlit + LangGraph + Ollama + MongoDB Atlas Vector Search + MCP-inspired Tool Orchestration**.
+
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-Vector_Search-green)
+![LLM](https://img.shields.io/badge/LLM-Integrated-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+---
+
+## Overview
 
 This project demonstrates how enterprise AI agents can:
 - reason
@@ -138,7 +145,19 @@ enterprise-agent-studio/
 
 ---
 
-# ⚙️ Installation
+## Prerequisites
+
+Before getting started, ensure you have:
+
+- ✅ MongoDB Atlas Cluster
+- ✅ MongoDB Connection String
+- ✅ OpenAI API Key/ Google Gemini API Key/ Anthropic API Key
+- ✅ Python 3.8+
+- ✅ Ollama (if you want to load llm in local system)
+
+---
+
+# ⚙️ Project Setup and Installation
 
 ## 1. Clone Repository
 
@@ -169,14 +188,11 @@ OLLAMA_BASE_URL=http://localhost:11434
 MONGO_URI=your_mongodb_connection
 
 OPENAI_API_KEY=your_openai_api_key
+ANTHROPIC_API_KEY="your_anthropic_api_key"
+GEMINI_API_KEY="your_gemini_api_key"
 ```
-Note:
 
-```text
-Suppose your feel that ollama hitting the maximum CPU. Use OPENAI API.
----
-
-# 🦙 Setup Ollama
+# 🦙 Setup Ollama (Optional)
 
 Install Ollama:
 
@@ -279,5 +295,11 @@ MIT License
 
 # 👨‍💻 Author
 
-Built for enterprise-scale Agentic AI workflow experimentation, portfolio showcasing, and AI engineering interviews.
-````
+Built for enterprise-scale Agentic AI workflow experimentation and AI engineering.
+
+**Siva R**
+
+Python Developer | Streamlit | MongoDB | GenAI | RAG Systems
+
+GitHub: https://github.com/Siva-Dev-001
+LinkedIn: https://linkedin.com/in/ramu-siva
