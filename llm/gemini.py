@@ -20,7 +20,7 @@ if not api_key:
 # It automatically picks up the GEMINI_API_KEY environment variable
 client = genai.Client()
 # ── Model config ──────────────────────────────────────────────────────────────
-LLM_MODEL   = os.getenv("GEMINI_LLM_MODEL",   "gemini-2.5-flash")
+LLM_MODEL   = os.getenv("GEMINI_LLM_MODEL",   "gemini-2.5-flash-lite")
 EMBED_MODEL = os.getenv("GEMINI_EMBED_MODEL",  "gemini-embedding-001")
 MAX_TOKENS  = int(os.getenv("GEMINI_MAX_TOKENS", "1024"))
 
