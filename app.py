@@ -27,7 +27,8 @@ import streamlit as st
 from workflow.graph import build_graph
 import pdfplumber
 import docx
-import io
+import pandas as pd
+import io, json
 
 st.set_page_config(
     page_title="Enterprise AI Studio",
@@ -47,7 +48,7 @@ workflow = load_graph()
 
 # ── File text extractor ───────────────────────────────────────────────────────
 def extract_text(uploaded_file) -> str:
-    """Extract text from PDF, DOCX, or TXT files."""
+    """Extract text from PDF, DOCX, TXT, XLS, XLSX files."""
     name = uploaded_file.name.lower()
     raw  = uploaded_file.read()
 
@@ -64,6 +65,15 @@ def extract_text(uploaded_file) -> str:
     elif name.endswith(".txt"):
         return raw.decode("utf-8", errors="ignore").strip()
 
+    elif name.endswith((".xlsx", ".xls")):             # ← NEW
+        xl      = pd.ExcelFile(io.BytesIO(raw))
+        sheets  = []
+        for sheet in xl.sheet_names:
+            df   = xl.parse(sheet).fillna("")          # blank cells → empty string
+            text = df.to_csv(index=False)              # convert rows → CSV-style text
+            sheets.append(f"[Sheet: {sheet}]\n{text}")
+        return "\n\n".join(sheets).strip()
+    
     else:
         st.error(f"Unsupported file type: {uploaded_file.name}")
         return ""
@@ -77,8 +87,8 @@ with col1:
 
     # File upload
     uploaded_files = st.file_uploader(
-        "Upload files (PDF, DOCX, TXT)",
-        type=["pdf", "docx", "txt"],
+        "Upload files (PDF, DOCX, TXT, XLSX, XLS)",
+        type=["pdf", "docx", "txt", "xlsx", "xls"],
         accept_multiple_files=True,
     )
 
@@ -97,8 +107,21 @@ with col1:
             file_context = "\n\n".join(extracted)
 
         # Preview extracted text
-        with st.expander("📄 Preview extracted text"):
-            st.text(file_context[:3000] + ("..." if len(file_context) > 3000 else ""))
+        # Preview — for xlsx show dataframe, others show raw text
+        with st.expander("📄 Preview extracted content"):
+            for f in uploaded_files:
+                if f.name.lower().endswith((".xlsx", ".xls")):
+                    st.markdown(f"**{f.name}**")
+                    f.seek(0)                          # reset pointer after read
+                    xl = pd.ExcelFile(io.BytesIO(f.read()))
+                    for sheet in xl.sheet_names:
+                        st.caption(f"Sheet: {sheet}")
+                        st.dataframe(
+                            xl.parse(sheet).fillna("").head(50),
+                            use_container_width=True
+                        )
+                else:
+                    st.text(file_context[:3000] + ("..." if len(file_context) > 3000 else ""))
 
     # Task input
     task = st.text_area(
@@ -146,10 +169,11 @@ with col2:
                 final = result.get("final") or "No output returned."
                 st.write(final)
 
+                download_data = json.dumps(final, indent=2)
                 # ── Download result ───────────────────────────────────────────
                 st.download_button(
                     label="⬇️ Download Result",
-                    data=final,
+                    data=download_data,
                     file_name="workflow_result.txt",
                     mime="text/plain",
                     use_container_width=True,

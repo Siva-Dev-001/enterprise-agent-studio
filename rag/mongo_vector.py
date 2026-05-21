@@ -11,12 +11,17 @@ def insert_doc(doc):
 
 
 def search(query_vector):
-    return list(collection.find({
+    pipeline = [
+    {
         "$vectorSearch": {
-            "queryVector": query_vector,
+            "index": "vector_index",
             "path": "embedding",
-            "numCandidates": 100,
+            "queryVector": query_vector,
+            "numCandidates": 50,
             "limit": 5,
-            "index": "vector_index"
         }
-    }))
+    }
+    ]
+
+    results = collection.aggregate(pipeline)
+    return list(results)
