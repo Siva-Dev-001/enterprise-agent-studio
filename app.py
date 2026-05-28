@@ -1,5 +1,6 @@
 import streamlit as st
 from workflow.graph import build_graph
+from rag.ingest import ingest_text
 import pdfplumber
 import docx
 import pandas as pd
@@ -169,7 +170,7 @@ with st.sidebar:
 
 # ── Page: Home ────────────────────────────────────────────────────────────────
 if "🏠" in page:
-    st.title("Multi-Agent AI Workflow Studio")
+    st.title("Enterprise AI Workflow Studio")
     st.caption("Orchestrate Planner · RAG · Supervisor agents on your enterprise data.")
     st.divider()
 
@@ -189,6 +190,7 @@ if "🏠" in page:
                 for f in uploaded_files:
                     text = extract_text(f)
                     if text:
+                        ingest_text(text)
                         extracted.append(f"--- {f.name} ---\n{text}")
                         st.success(f"✅ {f.name} ({len(text):,} chars)")
                     else:
